@@ -46,8 +46,7 @@ jobs:
           script: |
             cd /opt/techstore
             docker build -t todo-app .
-            docker stop todo-app || true
-            docker rm todo-app || true
+            docker rm -f todo || true
             docker run -d --name todo -p 3000:3000 todo-app
 
 
