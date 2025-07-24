@@ -1,0 +1,24 @@
+name: Deploy my app on my vps
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Sucess
+        run: echo "Hello world"
+
+
+
+
+
