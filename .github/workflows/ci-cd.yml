@@ -10,8 +10,34 @@ on:
 
 
 jobs:
-  Test:
+  Deploying:
     runs-on: ubuntu-latest
     steps:
-      - name : Testing something
-        run: echo "Hello world"
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Copy files to the VPS via SSH
+        uses: appleboy/scp-action@0.1.7
+        with:
+          host: ${{ secrets.VPS_IP }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          source: "./"
+          target: "/opt/techstore"
+          strip_components: 0
+
+      - name: Deploy on th server
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.VPS_IP }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /opt/techstore
+            docker build -t todo-app .
+            docker stop todo-app || true
+            docker rm todo-app || true
+            docker run -d --name todo -p 3000:3000 todo-app
+
+
