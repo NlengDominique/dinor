@@ -8,7 +8,7 @@ const ITEM = {
     completed: false,
 };
 
-beforeEach(() => {
+beforeEach( () => {
     if (fs.existsSync(location)) {
         fs.unlinkSync(location);
     }
